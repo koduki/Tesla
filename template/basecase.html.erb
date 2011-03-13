@@ -4,26 +4,28 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="<%= base_url %>" />
-<title><%= casename %></title>
+<title><%= case_name %></title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3"><%= casename %></td></tr>
+<tr><td rowspan="1" colspan="3"><%= case_name %></td></tr>
 </thead>
 <tbody>
 <% seq = 0 %>
-<% senario.each do |testcase| %>
+<% testcase.scenarios.each do |scenario| %>
+  <% scenario.commands.each do |command| %>
 <tr>
-	<% testcase.each do |value| %>
-  <td><%= value %></td>
-  <% end %>
+  <td><%= command.name %></td>
+  <td><%= command.target %></td>
+  <td><%= command.value %></td>
 </tr>
 <tr>
   <td>captureEntirePageScreenshot</td>
-  <td><%= ss[:output_dir] + casename + "_#{(seq += 1).to_s}.png" %></td>
+  <td><%= ss[:output_dir] + case_name + "_#{(seq += 1).to_s}.png" %></td>
   <td>background=<%= ss[:bgcolor] %></td>
 </tr>
+  <% end %>
 <% end %>
 </tbody>
 </table>

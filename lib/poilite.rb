@@ -77,17 +77,17 @@ module POILite
       end
   
       def first_cell_num 
-        @poirow.getFirstCellNum
+        (@poirow == nil) ? 0 : @poirow.getFirstCellNum
       end
       def first_cell
-        @cells[first_cell_num]
+        (@poirow == nil) ? nil : @cells[first_cell_num]
       end
   
       def last_cell_num
-        @poirow.getLastCellNum
+        (@poirow == nil) ? 0 : @poirow.getLastCellNum
       end
       def last_cell
-        @cells[last_cell_num]
+        (@poirow == nil) ? nil : @cells[last_cell_num]
       end
     end
   
@@ -97,7 +97,11 @@ module POILite
       end
   
       def [](index)
-        Util::value @poirow.getCell(index)
+        if @poirow == nil
+          ""
+        else
+          Util::value @poirow.getCell(index)
+        end
       end
     end
   
