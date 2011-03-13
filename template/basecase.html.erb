@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="<%= base_url %>" />
+<title><%= casename %></title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3"><%= casename %></td></tr>
+</thead>
+<tbody>
+<% seq = 0 %>
+<% senario.each do |testcase| %>
+<tr>
+	<% testcase.each do |value| %>
+  <td><%= value %></td>
+  <% end %>
+</tr>
+<tr>
+  <td>captureEntirePageScreenshot</td>
+  <td><%= ss[:output_dir] + casename + "_#{(seq += 1).to_s}.png" %></td>
+  <td>background=<%= ss[:bgcolor] %></td>
+</tr>
+<% end %>
+</tbody>
+</table>
+</body>
+</html>
