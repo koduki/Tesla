@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 require "erb"
+require "fileutils"
 
 module Tesla
   module Generator
@@ -32,8 +33,8 @@ module Tesla
             :bgcolor => options["ScreenShot BG Color"],
         }
 
-        Dir::mkdir(testcase_dir) unless File::exists? testcase_dir 
-        Dir::mkdir(ss[:output_dir]) unless File::exists? ss[:output_dir]
+        FileUtils.mkdir_p(testcase_dir) unless File::exists? testcase_dir 
+        FileUtils.mkdir_p(ss[:output_dir]) unless File::exists? ss[:output_dir]
 
         selenium_testcases = apply_template_case basecase, base_url, ss, testcases
         selenium_testcases.each{|testcase| open(testcase_dir + "#{testcase[:name]}.html", "w"){|f| f.puts testcase[:body] }}
