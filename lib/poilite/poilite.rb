@@ -1,8 +1,10 @@
 module POILite
+  libdir =  File.expand_path('../',  __FILE__)
+
   require 'java'
-  require 'lib/jarlib/poi-3.7-20101029.jar'
-  require 'lib/jarlib/poi-ooxml-3.7-20101029.jar'
-  require 'lib/jarlib/poi-scratchpad-3.7-20101029.jar'
+  require libdir + '/jarlib/poi-3.7-20101029.jar'
+  require libdir + '/jarlib/poi-ooxml-3.7-20101029.jar'
+  require libdir + '/jarlib/poi-scratchpad-3.7-20101029.jar'
   
   module Excel
     include_class 'org.apache.poi.ss.usermodel.Cell'
