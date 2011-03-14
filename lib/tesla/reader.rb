@@ -28,7 +28,7 @@ module Tesla
           end
         end
       end
-    end
 
+    end
   end
 end

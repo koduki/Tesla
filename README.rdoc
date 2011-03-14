@@ -5,7 +5,7 @@
 Tesla is testcase generator for selenium from excel.
 Excel is very popular test scenario writer tool in Japan. 
 
-This is inspire cucumber(http://cukes.info/), thank you!
+This is inspire cucumber(http://cukes.info/), thank you very much!
 
 == Using
 

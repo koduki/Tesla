@@ -19,17 +19,35 @@ module Tesla
     class SeleniumScenario
       attr_reader :commands
       def initialize scenario, steps
-        @commands = matching_scenario2define(scenario, steps).map{|cmd| SeleniumCommand.new cmd }
+#        @commands = matching_scenario2define(scenario, steps).map{|cmd| SeleniumCommand.new cmd }
+        @commands = matching_validations2define(scenario, steps).map{|cmd| SeleniumCommand.new cmd }
       end 
 
-      def matching_scenario2define scenario, steps
-        action = scenario.action
-        
+      def matching_validations2define scenario, steps
+
+        scenario.validations.find_all{|validation| not validation.empty? }.map{|action|
         words = (action.scan(/「.*」/).
                         map{|word| steps.find_all{|step| word == step.pattern }.first.defines } + 
                 action.scan(/"(.*?)"/)).
                 flatten
-        steps.find_all{|step| action =~  Regexp.new('^' + step.pattern + '$')}.first
+       p action
+       p words
+       puts
+       p action.scan(/c.*c/)
+
+        defines = steps.find_all{|step| action =~  Regexp.new('^' + step.pattern + '$')}.first.defines.flatten.join("\n")
+
+        words.reduce(defines){|defines, word| defines.sub('%s', word) }.split("\n").
+              map{|xs| xs.split(",")}.map{|xs| (xs.size == 2) ? xs << "" : xs}
+        }
+      end
+ 
+      def matching_scenario2define scenario, steps
+        action = scenario.action
+        words = (action.scan(/「.*」/).
+                        map{|word| steps.find_all{|step| word == step.pattern }.first.defines } + 
+                action.scan(/"(.*?)"/)).
+                flatten
         defines = steps.find_all{|step| action =~  Regexp.new('^' + step.pattern + '$')}.first.defines.flatten.join("\n")
 
         words.reduce(defines){|defines, word| defines.sub('%s', word) }.split("\n").
