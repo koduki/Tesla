@@ -15,7 +15,7 @@ module Tesla
       end
 
       def read_range book, index
-        book.sheets[index].used_range[1..-1]
+        book.sheets[index].used_range[1..-1].map{|xs| xs.map{|s| (s.class.to_s == "String") ? s.gsub('“', '"').gsub('”', '"') : s}}
       end
 
       def concat cells
