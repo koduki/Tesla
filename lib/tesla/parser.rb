@@ -19,24 +19,21 @@ module Tesla
     class SeleniumScenario
       attr_reader :commands
       def initialize scenario, steps
-        #@commands = matching_scenario2define(scenario, steps).map{|cmd| SeleniumCommand.new cmd }
-        @commands = matching_validations2define(scenario, steps).map{|cmd| SeleniumCommand.new cmd }
+        @commands = []
+        @commands += matching_scenario2define(scenario, steps).map{|cmd| SeleniumCommand.new cmd, true }
+        @commands += matching_validations2define(scenario, steps).map{|cmd| SeleniumCommand.new cmd, false }
       end 
 
       def matching_validations2define scenario, steps
-p scenario.validations
-        scenario.validations.find_all{|validation| not validation.empty? }.map{|action|
-        words = (action.scan(/「.*」/).
+        scenario.validations.find_all{|validation| not validation.empty? }.map do |action|
+          words = (action.scan(/「.*」/).
                         map{|word| steps.find_all{|step| word == step.pattern }.first.defines } + 
-                action.scan(/'(.*?)'/)).
-                flatten
-p action
-p words
-        defines = steps.find_all{|step| action =~  Regexp.new('^' + step.pattern + '$')}.first.defines.flatten.join("\n")
-
-        words.reduce(defines){|defines, word| defines.sub('%s', word) }.split("\n").
-              map{|xs| xs.split(",")}.map{|xs| (xs.size == 2) ? xs << "" : xs}
-        }
+                  action.scan(/'(.*?)'/)).
+                  flatten
+          defines = steps.find_all{|step| action =~  Regexp.new('^' + step.pattern + '$')}.first.defines.flatten.join("\n")
+          words.reduce(defines){|defines, word| defines.sub('%s', word) }.split("\n").
+              map{|xs| xs.split(",")}.map{|xs| (xs.size == 2) ? xs << "" : xs}.flatten
+        end
       end
  
       def matching_scenario2define scenario, steps
@@ -54,8 +51,13 @@ p words
     
     class SeleniumCommand
       attr_reader :name, :target, :value
-      def initialize items
+      def initialize items, capturble
         @name, @target, @value = items
+        @capturble = capturble
+      end
+
+      def capturble?
+        @capturble
       end
     end
 

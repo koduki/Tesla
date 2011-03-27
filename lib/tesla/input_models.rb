@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+require './lib/tesla/utils.rb'
 
 module Tesla
   module Reader
@@ -6,22 +7,12 @@ module Tesla
       attr_reader :id, :scenarios
       def initialize testcase
         @id = testcase[0].to_i
-        @scenarios = concat_scenario(testcase[1].map{|xs| [xs[1], [xs[2]]]}).
+        @scenarios = Utils::concat(testcase[1].map{|xs| [xs[1], [xs[2]]]}).
+                                    map{|xs| [xs[0], xs[1].flatten] }.
                                     find_all{|item| not item[0].empty? }.
                                     map{|item| TestScenario.new item }
       end
-
-      def concat_scenario cells
-        cells.reduce([]) do |r, x|
-          if x[1] == ""
-            r.last[1] +=  x[1]
-            r
-          else
-            r << x
-          end
-        end
-      end
-    end
+   end
 
     class TestScenario
       attr_reader :action, :validations  

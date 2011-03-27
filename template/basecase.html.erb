@@ -20,11 +20,13 @@
   <td><%= command.target %></td>
   <td><%= command.value %></td>
 </tr>
+    <% if command.capturble? %>
 <tr>
   <td>captureEntirePageScreenshot</td>
   <td><%= ss[:output_dir] + case_name + "_#{(seq += 1).to_s}.png" %></td>
   <td>background=<%= ss[:bgcolor] %></td>
 </tr>
+    <% end %>
   <% end %>
 <% end %>
 </tbody>
