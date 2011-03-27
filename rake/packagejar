@@ -1,0 +1,50 @@
+#require 'ant'
+require 'rake/clean'
+
+namespace :jar do
+  task :default => :package
+  # init
+  base_dir = pwd
+  jruby_complete_jar = "#{base_dir}/#{WORK_DIR}/jruby-complete.jar"
+  jar_bootstrap_rb = "#{base_dir}/#{WORK_DIR}/jar-bootstrap.rb"
+  target_jar = "#{base_dir}/#{DIST_DIR}/#{APP_NAME}.jar"
+
+  CLEAN.include [jruby_complete_jar, jar_bootstrap_rb, WORK_DIR]
+  CLOBBER.include [target_jar, DIST_DIR]
+
+  directory WORK_DIR
+  directory DIST_DIR
+
+  file jruby_complete_jar => WORK_DIR do
+    puts "== download"
+
+    require "open-uri" 
+    url = "http://jruby.org.s3.amazonaws.com/downloads/1.6.0/jruby-complete-1.6.0.jar"
+    puts "download #{url}"
+
+    open(jruby_complete_jar, "wb") do |output|
+      open(url) do |input|
+        output.write input.read
+      end
+    end
+  end
+
+  file jar_bootstrap_rb => WORK_DIR do
+    puts "== jar-bootstrap.rb"
+    puts "target #{TARGET}"
+
+    open(jar_bootstrap_rb, "w") do |f|
+      f.write "require '#{TARGET}'"
+    end
+  end
+
+  task :package => [DIST_DIR, jruby_complete_jar, jar_bootstrap_rb] do
+    puts "== package"
+    cp jruby_complete_jar, target_jar
+    
+    sh "jar uf #{target_jar} #{FILES.join(' ')}"
+    sh "cd #{WORK_DIR};jar ufe #{target_jar} org.jruby.JarBootstrapMain jar-bootstrap.rb"
+
+    puts "done."
+  end
+end

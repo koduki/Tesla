@@ -7,13 +7,17 @@ Excel is very popular test scenario writer tool in Japan.
 
 This is inspire cucumber(http://cukes.info/), thank you very much!
 
-== Using
+== Using:
 
 1. Describe testcase in Excel
 2. Write a step definition in Selenium and erb(ruby base tamplate).
 3. jruby gen_testcase.rb testcase.xls
 
-== Customize
+== PAKAGING:
+ rake jar:package
+ java -jar dist/poilite.jar
+
+== Customize:
 
 If you want to customize this for your template, 
 please fix "lib/tesla/reader.rb" . 
