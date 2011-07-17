@@ -4,6 +4,7 @@ require 'rake/clean'
 namespace :jar do
   task :default => :package
   # init
+  JRUBY_VERSION="1.6.3"
   base_dir = pwd
   jruby_complete_jar = "#{base_dir}/#{WORK_DIR}/jruby-complete.jar"
   jar_bootstrap_rb = "#{base_dir}/#{WORK_DIR}/jar-bootstrap.rb"
@@ -19,7 +20,7 @@ namespace :jar do
     puts "== download"
 
     require "open-uri" 
-    url = "http://jruby.org.s3.amazonaws.com/downloads/1.6.0/jruby-complete-1.6.0.jar"
+    url = "http://jruby.org.s3.amazonaws.com/downloads/#{JRUBY_VERSION}/jruby-complete-#{JRUBY_VERSION}.jar"
     puts "download #{url}"
 
     open(jruby_complete_jar, "wb") do |output|
