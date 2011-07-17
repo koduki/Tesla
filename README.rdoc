@@ -15,7 +15,7 @@ This is inspire cucumber(http://cukes.info/), thank you very much!
 
 == PAKAGING:
  rake jar:package
- java -jar dist/poilite.jar
+ java -jar dist/tesla.jar
 
 == CUSTOMIZE:
 
